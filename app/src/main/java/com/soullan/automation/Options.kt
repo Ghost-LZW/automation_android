@@ -1,7 +1,10 @@
 package com.soullan.automation
 
-class Options(args: Array<String>) {
-    private val options = hashMapOf<String, Any>();
+class Options(
+    args: Array<String>,
+) {
+    private val options = hashMapOf<String, Any>()
+
     init {
         for (arg in args) {
             val (k, v) = arg.split("=")

@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "automation_android"
 include(":app")
- 

@@ -4,7 +4,7 @@ Automation tools for the Android platform.
 
 Now it just include a fast screenshot feature.
 
-Device control leverages the capabilities of (scrcpy)[https://github.com/Genymobile/scrcpy]
+Device control leverages the capabilities of [scrcpy](https://github.com/Genymobile/scrcpy)
 
 **Getting Started:**
 
@@ -41,3 +41,7 @@ while True:
 with open("test.jpeg", "wb") as f:
     f.write(raw_data)
 ```
+
+**TODO:**
+
+* screenshot benchmark

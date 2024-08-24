@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 @SuppressLint("PrivateApi")
 public class ScreenShotPrivate {
-    private static final String TAG = ScreenshotServer.class.getSimpleName();
+    private static final String TAG = ScreenShotPrivate.class.getSimpleName();
     private final IInterface displayService;
 
     public ScreenShotPrivate() {

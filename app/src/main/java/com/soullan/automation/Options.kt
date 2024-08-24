@@ -3,7 +3,7 @@ package com.soullan.automation
 class Options(
     args: Array<String>,
 ) {
-    private val options = hashMapOf<String, Any>()
+    private val options = hashMapOf<String, String>()
 
     init {
         for (arg in args) {
@@ -13,4 +13,7 @@ class Options(
     }
 
     operator fun get(k: String) = options[k]
+
+    val host: String
+        get() = get("host") ?: "automation"
 }

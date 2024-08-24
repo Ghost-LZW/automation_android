@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+// Base on https://github.com/lcacheux/screenshotserver/blob/master/screenshotServer/src/main/java/net/cacheux/screenshotserver/ScreenshotServer.java
 @SuppressLint("PrivateApi")
 public class ScreenShotPrivate {
     private static final String TAG = ScreenShotPrivate.class.getSimpleName();

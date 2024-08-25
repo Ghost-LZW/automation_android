@@ -7,9 +7,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.util.Log;
-import android.view.Display;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -62,6 +60,10 @@ public class ScreenShotPrivate {
             Class<?> cls = displayInfo.getClass();
             int width = cls.getDeclaredField("logicalWidth").getInt(displayInfo);
             int height = cls.getDeclaredField("logicalHeight").getInt(displayInfo);
+            int rotation = cls.getDeclaredField("rotation").getInt(displayInfo);
+            if (rotation == 1 || rotation == 3) {
+                return new Rect(0, 0, height, width);
+            }
             return new Rect(0, 0, width, height);
         } catch (NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
             Log.e(TAG, "Error getting screen info", e);

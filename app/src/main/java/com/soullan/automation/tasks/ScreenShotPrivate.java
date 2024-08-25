@@ -7,9 +7,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.util.Log;
-import android.view.Display;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -35,13 +33,12 @@ public class ScreenShotPrivate {
     }
 
     public Bitmap takeScreenshot() {
-        Rect screenSize = getScreenSize();
-
         try {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+                RectWithRotate screenSize = getScreenSize();
                 return (Bitmap) Class.forName("android.view.SurfaceControl")
                         .getMethod("screenshot", Rect.class, int.class, int.class, int.class)
-                        .invoke(null, screenSize, screenSize.width(), screenSize.height(), 0);
+                        .invoke(null, screenSize.rect, screenSize.rect.width(), screenSize.rect.height(), screenSize.rotation);
             } else {
                 return ScrcpySurfaceControl.takeScreenshot();
             }
@@ -53,7 +50,17 @@ public class ScreenShotPrivate {
         }
     }
 
-    private Rect getScreenSize() {
+    private static class RectWithRotate {
+        Rect rect;
+        int rotation;
+
+        RectWithRotate(Rect rect, int rotation) {
+            this.rect = rect;
+            this.rotation = rotation;
+        }
+    }
+
+    private RectWithRotate getScreenSize() {
         try {
             Object displayInfo = displayService.getClass()
                     .getMethod("getDisplayInfo", int.class)
@@ -62,7 +69,8 @@ public class ScreenShotPrivate {
             Class<?> cls = displayInfo.getClass();
             int width = cls.getDeclaredField("logicalWidth").getInt(displayInfo);
             int height = cls.getDeclaredField("logicalHeight").getInt(displayInfo);
-            return new Rect(0, 0, width, height);
+            int rotation = cls.getDeclaredField("rotation").getInt(displayInfo);
+            return new RectWithRotate(new Rect(0, 0, width, height), rotation);
         } catch (NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
             Log.e(TAG, "Error getting screen info", e);
             throw new IllegalStateException("Error getting screen info", e);

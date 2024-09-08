@@ -16,4 +16,7 @@ class Options(
 
     val host: String
         get() = get("host") ?: "automation"
+
+    val silence: Boolean
+        get() = get("silence")?: "" == "true"
 }

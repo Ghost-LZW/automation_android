@@ -9,7 +9,6 @@ import java.nio.charset.Charset
 fun main(args: Array<String>) {
     val options = Options(args)
 
-    println("Start server")
     val server = LocalServerSocket(options.host)
     println("Listen on ${options.host}")
 
@@ -18,7 +17,7 @@ fun main(args: Array<String>) {
     println("Client connect")
 
     // thread {ClientHandler(client).run()}
-    ClientHandler(client).run()
+    ClientHandler(client).run(options.silence)
 }
 
 class ClientHandler(
@@ -29,10 +28,9 @@ class ClientHandler(
     private val writer = client.outputStream
     private val reader = client.inputStream
 
-    fun run() {
+    fun run(silence: Boolean) {
         running = true
         write("a")
-        println("Write begin message Done")
 
         while (running) {
             try {
@@ -44,14 +42,17 @@ class ClientHandler(
 
                 assert(cmd == 1)
 
-                println("Start take shot")
                 val bitmap = screenShot.takeScreenshot()
-                println("take shot done, with height: ${bitmap.height} width: ${bitmap.width}")
+                if (!silence) {
+                  println("take shot done, with height: ${bitmap.height} width: ${bitmap.width}")
+                }
 
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, writer)
 
                 writer.write("^EOF".toByteArray())
-                println("End write")
+                if (!silence) {
+                  println("End write")
+                }
             } catch (ex: Exception) {
                 // TODO: Implement exception handling
                 println(ex.toString())

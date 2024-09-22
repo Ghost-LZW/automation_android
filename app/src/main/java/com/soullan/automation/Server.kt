@@ -17,11 +17,12 @@ fun main(args: Array<String>) {
     println("Client connect")
 
     // thread {ClientHandler(client).run()}
-    ClientHandler(client).run(options.silence)
+    ClientHandler(client, screenshotQuality = options.quality).run(options.silence)
 }
 
 class ClientHandler(
     private val client: LocalSocket,
+    private val screenshotQuality: Int,
 ) {
     private var running: Boolean = false
     private val screenShot = ScreenShotPrivate()
@@ -47,7 +48,7 @@ class ClientHandler(
                   println("take shot done, with height: ${bitmap.height} width: ${bitmap.width}")
                 }
 
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, writer)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, screenshotQuality, writer)
 
                 writer.write("^EOF".toByteArray())
                 if (!silence) {

@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/android
 # Edit at https://www.toptal.com/developers/gitignore?templates=android
 
+.project
+.settings
+.classpath
+
 ### Android ###
 # Gradle files
 .gradle/

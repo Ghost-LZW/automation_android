@@ -19,4 +19,7 @@ class Options(
 
     val quality: Int
         get() = (get("quality") ?: "100").toInt()
+        
+    val silence: Boolean
+        get() = get("silence")?: "" == "true"
 }

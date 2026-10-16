@@ -4,10 +4,18 @@ import android.graphics.Bitmap
 import android.net.LocalServerSocket
 import android.net.LocalSocket
 import com.soullan.automation.tasks.ScreenShotPrivate
+import com.soullan.automation.tasks.SetText
 import java.nio.charset.Charset
+import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     val options = Options(args)
+
+    options.setText?.let { text ->
+        val error = SetText.run(text, options.append)
+        println(error?.let { "error: $it" } ?: "ok")
+        exitProcess(if (error == null) 0 else 1)
+    }
 
     val server = LocalServerSocket(options.host)
     println("Listen on ${options.host}")

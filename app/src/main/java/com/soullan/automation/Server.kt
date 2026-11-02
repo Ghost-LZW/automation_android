@@ -3,12 +3,17 @@ package com.soullan.automation
 import android.graphics.Bitmap
 import android.net.LocalServerSocket
 import android.net.LocalSocket
+import android.os.Looper
 import com.soullan.automation.tasks.ScreenShotPrivate
 import com.soullan.automation.tasks.SetText
 import java.nio.charset.Charset
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+    // UiAutomation builds its interaction client on the main looper; an
+    // app_process entry point starts without one and would crash there.
+    Looper.prepareMainLooper()
+
     val options = Options(args)
 
     options.setText?.let { text ->
